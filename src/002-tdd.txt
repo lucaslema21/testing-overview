@@ -1,0 +1,6 @@
+Vamos a hacer una mini app que lo que hace es presentar un boton, que al clickearse, togglea su background color de rojo a azul, y viceversa.
+
+Siguiendo la filosofía de TDD, primero vamos a escribir los tests, y después vamos a codear la app.
+
+Primero lo primero, vamos a limpiar todo el componente, dejando que sólo devuelva un div vacío. Esto es un poco el setup inicial que comentábamos anteriormente, para que al menos los tests puedan intentar correr, y naturalmente a esta altura, fallar como corresponde.
+
