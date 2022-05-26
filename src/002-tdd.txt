@@ -4,3 +4,41 @@ Siguiendo la filosofía de TDD, primero vamos a escribir los tests, y después v
 
 Primero lo primero, vamos a limpiar todo el componente, dejando que sólo devuelva un div vacío. Esto es un poco el setup inicial que comentábamos anteriormente, para que al menos los tests puedan intentar correr, y naturalmente a esta altura, fallar como corresponde.
 
+Escribiendo tests
+-----------------
+
+Siendo que la app va a permitirnos togglear el color de fondo de un botón, vamos a empezar a escribir los tests correspondientes para eso.
+Podemos arrancar escribiendo un test que verifique que el botón tiene un determinado color inicial, que nosotros consideremos correcto según diseño de la app, así como un texto inicial.
+
+La sintaxis es muy simple:
+
+Usamos un método test global que ya nos es provisto por la librería de testing, que recibe 2 parámetros:
+1- El nombre del test, que debe ser bien descriptivo.
+2- Una función, que será el test en sí a ejecutar.
+
+Luego, podemos escribir un test que verifique el botón cambie de color y se ponga azul al ser clickeado.
+
+Ya definidos nuestros tests, podemos empezar a codear cómo vamos a testear.
+
+Vamos a usar el método render, provisto por la librería, que estará dibujando el componente que necesitemos testear en el DOM virtual.
+Luego vamos a buscar el botón en el DOM, usando un selector. En este caso, al ser un elemento interactuable, nuestra mejor opción es usar getByRole.
+Como primer parámetro le pasamos el role del elemento, que en este caso es button, y segundo le pasamos un objeto donde le indicamos su name (que equivaldrá al texto del botón).
+
+Seleccionado el elemento, ahora podemos corroborar que los estilos que tiene corresponde a lo que sea que necesitemos inicialmente. Para eso, existen una serie de métodos que nos permite indicar qué esperamos de un elemento, para verificar si la prueba pasa o falla.
+
+Estos métodos, llamados matchers, nos los proveerá jest-dom, y existe una enorme cantidad de ellos que nos permite verificar una amplia gama de escenarios.
+https://github.com/testing-library/jest-dom
+
+De esa lista de matchers, podemos escoger toHaveStyle, ya que nosotros lo que vamos a necesitar es corroborar que el botón tenga determinados estilos.
+
+Esperando resultados
+--------------------
+
+Para esperar un resultado, habiendo evaluado una situación, utilizamos el método "expect".
+
+Este método es el que nos sirve para evaluar con los matchers que mencionábamos antes, y recibe un parámetro que es el elemento a evaluar, habiéndolo seleccionado anteriormente.
+Luego, podemos concatenarle matchers para evaluarlo.
+
+Si corremos el test con npm test, naturalmente fallará. Esto es normal por dos motivos: por un lado porque el componente <App /> no tiene nada por ahora, y por otro porque es parte de test-driven development.
+La idea es que falle para que luego nosotros tengamos que "corregir" la situación, y que el test apruebe.
+
