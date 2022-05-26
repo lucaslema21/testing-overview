@@ -1,0 +1,112 @@
+Qué es testear?
+---------------
+
+La idea de cómo encarar el testeo es hacerlo de la misma manera que los usuarios utilizan nuestro sitio.
+
+Cómo el sitio esté programado pasa un poco a un segundo plano, ya que lo que importa a los tests en sí es que el sitio funcione y lo que queremos que funcione bueno, efectivamente funcione.
+
+Para hacerlo, se utilizan selectores especiales que nos van a permitir ubicar e incluso interactuar con los elementos de nuestro sitio. Estos selectores son LOS MISMOS que utilizan los screen readers, que son herramientas fundamentales para garantizar la accesibilidad de nuestra web.
+
+Esto significa que si nuestros tests pueden encontrar los elementos que le pedimos, entonces los screen readers también, y eso es importantísimo.
+
+Para hacer tests, vamos a necesitar 2 herramientas principales:
+
+- React Testing Library
+	- Provee un DOM virtual donde se montarán nuestros componentes para correr tests. Esto permite testear sin la necesidad de un browser.
+- Jest
+	Encuentra tests, los ejecuta y determina si éstas pasan o fallan.
+
+
+Test Driven Development
+-----------------------
+
+Es una filosofía de trabajo que nos indica que escribamos los tests antes del código, cosa de después escribir código para que luego los tests pasen. Se lo llama también red-green testing, donde buscamos que primero los tests FALLEN, y luego los vamos haciendo aprobar a medida que codeamos.
+
+Primero escribimos una base muy simplona de código, cosa que los tests al menos puedan correr y fallar.
+Luego escribimos los tests, que sabemos que van a fallar porque todavía lo que testeamos no hace nada.
+Luego escribimos el código en función de dichos tests.
+Y finalmente los tests pasan! :D
+
+Esta filosofía existe en gran medida para integrar los tests al proceso de desarrollo, no sólo siendo que todo el proceso sea más eficiente en sí, sino también para que escribir tests no se sienta como algo molesto que uno escribe cuando ya terminó la tarea que tenía asignada, que en el 99.99% de los casos resulta en escribirlos sin ganas.
+
+De esta forma, los tests corren también a medida que vamos probando la app manualmente mientras vamos codeando y progresando en lo que sea que nos hayan asignado :D
+
+
+Tipos de test
+-------------
+
+Unit test: Testean una unidad de código, totalmente aislada.
+Integration test: Testea cuando diferentes unidades interactúan entre sí.
+Functional test: Testea una función particular de algún software. Ojo, no confundir función con las funciones que declaramos en el código, sino función relacionado a una feature o comportamiento entre sí.
+Acceptance o End to end tests: Requieren browser y un server de verdad. Se hacen a través de cosas como Cypress o Selenium, que corren e interactúan con nuestra app corriendo un browser automatizado.
+
+
+Functional Testing vs Unit Testing
+----------------------------------
+
+Unit testing como decíamos antes sirve para testear código bien aislado. Esto puede ser por ejemplo una función donde testeamos que ante un cierto input, haya un determinado output; y cualquier tipo de dependencia o data adicional la podemos "mockear".
+
+Es muy útil para encontrar errores, pero su gran limitación es que los unit tests están un tanto "alejados" de cómo los usuarios en realidad interactúan con nuestro sitio.
+Es decir, podemos tener unit tests que aprueban, y en el mismo exacto escenario tener un usuario que tiene dificultades o experimenta errores al usar la misma exacta feature; y viceversa.
+Además, son totalmente propensas a romperse completamente si decidimos refactorear. Esto es porque, dada la naturaleza de estos tests, lo que estamos testeando es prácticamente cómo está escrito el código y no mucho más que eso; y de esa manera, terminamos teniendo tests que fallan a pesar de que el sitio funciona exactamente igual que antes y el usuario puede continuar usándolo sin problemas.
+
+Functional Testing por otro lado es prácticamente un mindset distinto a la hora de encarar testing.
+
+La idea de Functional Testing es incluir todos los tests relevantes al comportamiento del usuario con respecto a nuestro sitio.
+De este modo, también tenemos como resultado tests más robustos, porque en caso de refactorear los mismos van a seguir siendo exitosos, siempre y cuando el sitio siga funcionando correctamente.
+
+Su desventaja en sí es que son un tanto más difíciles de debuggear, pero ya veremos cómo se hace :D
+
+React-testing-library recomienda seguir la filosofía de Functional Testing, y por eso vamos a estar usando este approach en el resto del curso.
+
+
+TDD vs BDD
+----------
+
+Así como existe TDD (Test Driven Development), también existe BDD (Behavior Driven Development).
+
+Y como veníamos hablando de tratar de testear el comportamiento en lugar de la implementación, no deberíamos usar BDD en lugar de TDD?
+
+Bueno en realidad no, porque BDD se refiere explícitamente a un proceso donde además de los devs, están involucrados los QA, producto y demás miembros que hacen a un equipo colaborando entre sí.
+
+Testing y Accesibilidad
+-----------------------
+
+La accesibilidad en web es un factor extremadamente importante, que afortunadamente en los últimos años viene tomando cada vez más y más protagonismo en el mundo mágico de front-end.
+
+React testing library recomienda encontrar elementos en el DOM virtual que vamos a estar usando, utilizando selectores de accesibilidad. Los podemos encontrar en la documentación https://testing-library.com/docs/queries/about/#priority
+
+En sí, la librería nos recomienda un order de prioridad, indicándonos usar la primera que nos sea de utilidad, yendo de arriba a abajo, y empezando primero por las que se considera las "queries accesibles para todos":
+
+getByRole: Esto se puede utilizar para seleccionar prácticamente cualquier elemento del DOM que esté expuesto a cualquier herramienta de accesibilidad, como por ejemplo los screen readers. Prácticamente siempre tendríamos que intentar utilizar este selector, y de no poder usarlo, existe la posibilidad de que simplemente nuestro elemento no sea accesible a los lectores de pantalla.
+
+getByLabelText: Este es ideal para formularios. Cuando los usuarios navegan por un form, lo hacen leyendo los labels. Este método emula ese comportamiento, por lo que es ideal para formularios.
+
+getByPlaceholderText: Este elemento busca por placeholder. OJO, esto no significa que un placeholder esté para reemplazar un label. Pero si no tenés otra opción, usalo.
+
+getByText: Este es ideal para encontrar elementos que no son interactuables, como divs, parrafos, span y demás. Busca por contenido de texto, que es como un usuario encuentra justamente contenido al leer lo que tiene en pantalla.
+
+getByDisplayValue: Este encuentra elementos por su value actual. Es útil cuando el usuario navega por un formulario con campos que arrancan con algún valor. Como por ejemplo, cuando está frente a un form de edición.
+
+Luego, tenemos otro grupo, que es el de "queries semánticas de HTML5":
+
+getByAltText: Este permite encontrar elementos por el valor de su propiedad "alt", que podemos encontrar en imágenes, input y demás.
+getByTitle: Este permite encontrar elementos por el valor de su propiedad "title". Ojo, porque los lectores de pantalla no suelen leer consistentemente esta propiedad. Además, title NO es una propiedad que se pueda visualizar fácilmente para usuarios que usen su vista para navegar el sitio.
+
+Y finalmente, por Test IDs:
+
+getByTestId: Ojo, los usuarios no pueden ver ni escuchar este valor. Solamente se recomienda para aquellos casos donde ningún otro selector nos sirva, como por ejemplo cuando un texto que necesitemos seleccionar es dinámico y no sabemos qué valor pueda llegar a tener.
+
+Yendo a un ejemplo concreto:
+
+Cuando creamos una app con create-react-app obtenemos un sitio mega simple que ya tiene un test inicial, que utiliza getByText para encontrar un elemento, y confirmar que esté en el documento.
+Como dijimos, getByText es prácticamente nuestra primera opción a la hora de encontrar elementos NO interactuables. Sin embargo, en el test de demostración estamos hablando de un link, que sí es interactuable.
+Dicho ésto, podemos en realidad mejorar este test utilizando getByRole.
+
+const linkElement = screen.getByRole('link', /learn react/i);
+const linkElement = screen.getByRole('link', {name: 'Learn React'});
+
+La W3C, que es el ente que regula los estándares de usabilidad, accesibilidad y semántica en la web, nos provee de las definiciones de roles para saber cuál debemos usar en cada caso:
+https://www.w3.org/TR/wai-aria/#role_definitions
+
+Algunos elementos tienen roles ya predefinidos, como el link del ejemplo, o la etiqueta button.
