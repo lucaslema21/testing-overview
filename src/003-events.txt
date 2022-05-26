@@ -15,3 +15,8 @@ En sí, podemos incluir todos los expect que necesitemos en un mismo test, siemp
 
 Desde el punto de vista de unit test puro, se recomienda que haya un test por CADA expect.
 Desde el punto de vista de functional testing, ésto no tiene sentido y tranquilamente pueden ir juntos. Esto es porque functional testing se concentra, como dijimos anteriormente, en testear comportamiento basado en cómo el usuario interactúa con nuestro sitio.
+
+Así, aprovechamos en el mismo test el elemento, y usamos el matcher toHaveTextContent para verificar que el contenido del texto del botón sea el que esperamos.
+
+Los matchers, tal como mencionábamos anteriormente, los tenemos todos acá, en la documentación de jest-dom:
+https://www.npmjs.com/package/@testing-library/jest-dom
