@@ -4,13 +4,11 @@ import { useState } from 'react';
 
 function App() {
 
-  const [styles, setStyles] = useState({
-    backgroundColor: 'red'
-  })
+  const [bkgColor, setBkgColor] = useState('red')
 
   return (
     <div className="App">
-      <button style={styles} onClick={() => setStyles({backgroundColor: 'green'})}>Change to blue</button>
+      <button style={{backgroundColor: bkgColor}} onClick={() => setBkgColor('blue')}>Change to {bkgColor === 'red' ? 'blue' : 'red'}</button>
     </div>
   );
 }
