@@ -1,0 +1,33 @@
+.header {
+    background-color: brown;
+    color: white;
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 0 1em;
+    box-sizing: border-box;
+}
+
+
+.loginButton {
+    background-color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 80px;
+    cursor: pointer;
+    font-size: 1.05rem;
+}
+
+@media (min-width: 800px) {
+    .headerContent {
+        width: 800px;
+        margin: auto;
+        padding: 0;
+    }
+}

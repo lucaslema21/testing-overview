@@ -1,0 +1,15 @@
+.products {
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+    margin: 2em auto;
+    justify-content: center;
+}
+
+@media (min-width: 800px) {
+    .products {
+        width: 800px;
+        gap: 1em;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,49 @@
+
+.Product {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 400px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    overflow: hidden;
+    justify-content: space-between;
+    position: relative;
+}
+.ProductImage {
+    height: 50%;
+    object-fit: cover;
+}
+
+.DeleteButton {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.Button {
+    background: none;
+    outline: none;
+    border: none;
+    background-color: brown;
+    color: white;
+    cursor: pointer;
+    transition: all .3s;
+    font-weight: bold;
+    padding: 1em 0;
+}
+
+.Button:hover {
+    background: white;
+    color: brown;
+}
+
+@media (min-width: 800px) {
+    .Product {
+        width: 30%;
+    }
+}
