@@ -1,0 +1,40 @@
+Ya sabemos que podemos testear cómo inicialmente se deben presentar ciertos elementos, cómo deben reaccionar a la hora de ser clickeados, y también cómo buscar elementos que se renderean condicionalmente.
+
+Nos falta un último escenario típico donde desde nuestra aplicación hacemos un http request a un servicio/endpoint, mostrándole al user no sólo que algo está ocurriendo, sino también que una vez cumplida una promesa, qué ocurrió con lo que sea que estábamos procesando.
+
+Para ésto, vamos a usar de ejemplo nuestra Carpincho Store, y estaremos diferentes herramientas que nos van a permitir hacer un mock de un hipotético request a un endpoint, devolviéndonos una respuesta con nuestros productos..
+
+Vamos a analizar cómo testear requests tanto a una clásica REST API, como a través de graphql.
+
+Preparando el terreno
+---------------------
+
+Si estás parado en este branch, es porque vamos a ver el ejemplo con REST API, y para ello vamos a necesitar dos cosas:
+
+- instalar un paquete que se llama "msw", cuyas siglas corresponden a Mock Service Worker, y nos permitirá interceptar requests y devolver determinadas respuestas que nosotros le indiquemos.
+- un server, que está en una carpeta en este mismo directorio y devuelve los carpinchitos de la home. Para correrlo, sólo es necesario correr npm install dentro de la carpeta server, y luego node server.js
+
+Una vez instalado, tenemos que crear unas funciones especiales que se llaman handlers, que nos permitirán determinar lo que se retorne de cualquier ruta/endpoint, y vamos a crearlos en una carpeta mocks, en el archivo handlers.js
+
+Para más info, acá dejo la documentación: https://mswjs.io/docs/getting-started/mocks/rest-api#request-handler
+
+Ya con el server corriendo, podemos preparar nuestros handlers para interceptar requests!
+
+Handlers
+--------
+
+Los handlers tienen una estructura muy simple, y hasta incluso familiar para aquellos que alguna vez hayan usado node.
+
+En sí, son básicamente un array donde cada índice será una función que representará a cada request que queramos testear. Lo interesante es que vamos a definir también qué estará devolviendo siempre. En este caso, le agregamos los dos primeros productos de nuestro mismo exacto json de carpinchos.
+
+Finalmente, nos queda levantar el Mock Service Worker
+
+MWS
+---
+
+Ya con los handlers definidos, lo que nos queda es simplemente integrarlo!
+
+Siguiendo los pasos de la documentación, vamos a crear un server para el Mock Service Worker: 
+https://mswjs.io/docs/getting-started/integrate/node
+
+Una vez configurado, lo último es configurar Create React App para que funcione con el Mock Service Worker, cosa que dicho servicio intercepte los requests y devuelva la respuesta que le indicamos en los handlers.
