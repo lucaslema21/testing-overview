@@ -37,4 +37,6 @@ Ya con los handlers definidos, lo que nos queda es simplemente integrarlo!
 Siguiendo los pasos de la documentación, vamos a crear un server para el Mock Service Worker: 
 https://mswjs.io/docs/getting-started/integrate/node
 
-Una vez configurado, lo último es configurar Create React App para que funcione con el Mock Service Worker, cosa que dicho servicio intercepte los requests y devuelva la respuesta que le indicamos en los handlers.
+Una vez configurado, lo último es configurar Create React App para que funcione con el Mock Service Worker, cosa que dicho servicio intercepte los requests y devuelva la respuesta que le indicamos en los handlers. Esto se hace modificando el archivo setupTests.js, y creando un server.js en la carpet amocks, que levantará los handlers y creará un server el cual recibirá los requests interceptados.
+
+Con todo esto ya configurado y preparado, hagamos que los carpinchos vengan de un server con sus tests correspondientes.
