@@ -1,0 +1,32 @@
+Vamos primero a crear los tests que vamos a necesitar.
+
+Nosotros sabemos que lo que vamos a estar trayendo desde el backend son los productos, los cuales todos tienen un id, nombre e imagen.
+
+Lo bueno de ésto es que nosotros ya tenemos tests que en cierta forma se aseguran que los elementos estén en pantalla, puntualmente el test que verifica que al logearse, el botón de delete aparezca en cada card.
+Este test está indirectamente verificando que las imágenes estén, ya que está verificando que haya una cantidad de botones igual a la cantidad de imágenes.
+
+En caso de hacer unit testing del más puro, deberíamos crear un test aparte que, con cierta redundancia, verifique que los elementos img estén en pantalla.
+Pero como mencionábamos anteriormente, los tests funcionales se basan en que prueben de la misma manera en la que un usuario humano lo haga. Dicho en otras palabras, si la imagen ya está en pantalla, para qué volver a probar?
+
+De cualquier forma, este test da como aprobado porque las imágenes se están declarando en el propio componente y no están siendo conseguidas de un server.
+Vamos rápidamente a hacer que ésto sea así, y veremos qué pasa con las pruebas...
+
+---
+
+Ahora que los carpinchitos vienen desde el backend, notamos que por algún motivo las pruebas fallan.
+
+Esto es porque al momento en el que las pruebas corren, como las mismas son por ahora sincrónicas, las imágenes todavía no están en el DOM. Como resultado, las imágenes nunca son encontradas, y el test falla.
+
+Hora de hacer asincrónicas nuestras pruebas.
+
+Async Testing
+-------------
+
+Hacer asincrónicas las pruebas es algo bastante simple, y lleva de cierto modo una regla de oro:
+
+Cada vez que necesitemos esperar que un elemento se renderee asincrónicamente, debemos usar await findBy.
+
+Los queries de tipo find son especiales porque devuelven una promesa. Internamente lo que hacen es intentar encontrar elemento cada una cantidad de tiempo predefinida, hasta un cierto timeout.
+Dado que devuelve una promesa, debemos usar await/async
+
+OJO: Es posible que los tests no pasen si existe alguna minima diferencia entre la data que devuelve el backend real con respecto al backend mockeado de nuestros handlers.

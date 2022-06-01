@@ -22,11 +22,11 @@ test('that the Login button toggles back and forth between Logout and Login when
   expect(element).toHaveTextContent('Login')
 })
 
-test('that a delete button shows up inside each card whenever the user logs in', () => {
+test('that a delete button shows up inside each card whenever the user logs in', async () => {
   render(<App />)
   const element = screen.getByRole('button', {name: 'Login'});
   fireEvent.click(element);
-  const imgElements = screen.getAllByRole('img');
+  const imgElements = await screen.findAllByRole('img');
   const cardElement = screen.getAllByRole('button', {name: 'X'})
   expect(cardElement).toHaveLength(imgElements.length)
 })
