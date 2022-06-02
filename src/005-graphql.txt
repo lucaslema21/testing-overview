@@ -1,4 +1,4 @@
-Testeando Graphql a través de un Service Worker
+Testeando Graphql a través de MockedProvider
 -----------------------------------------------
 
 Lo que vamos a necesitar para testear a través de este método es simplemente importar un Provider especial que nos brinda Apollo, nuestro cliente graphql.
