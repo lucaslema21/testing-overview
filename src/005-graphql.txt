@@ -1,0 +1,26 @@
+Testeando Graphql a través de un Service Worker
+-----------------------------------------------
+
+Lo que vamos a necesitar para testear a través de este método es simplemente importar un Provider especial que nos brinda Apollo, nuestro cliente graphql.
+
+Para ello importamos MockedProvider de '@apollo/client/testing', y wrappeamos el componente que queramos testear con dicho provider.
+
+Este provider recibirá un atributo "mocks", que recibirá como valor la estructura de request y response que esperamos.
+
+Sin embargo, vemos que la prueba de encontrar las img falla.
+
+Esto es porque al momento en el que las pruebas corren, como las mismas son por ahora sincrónicas, las imágenes todavía no están en el DOM. Como resultado, las imágenes nunca son encontradas, y el test falla.
+
+Hora de hacer asincrónicas nuestras pruebas.
+
+Async Testing
+-------------
+
+Hacer asincrónicas las pruebas es algo bastante simple, y lleva de cierto modo una regla de oro:
+
+Cada vez que necesitemos esperar que un elemento se renderee asincrónicamente, debemos usar await findBy.
+
+Los queries de tipo find son especiales porque devuelven una promesa. Internamente lo que hacen es intentar encontrar elemento cada una cantidad de tiempo predefinida, hasta un cierto timeout.
+Dado que devuelve una promesa, debemos usar await/async
+
+OJO: Es posible que los tests no pasen si existe alguna minima diferencia entre la data que devuelve el backend real con respecto al backend mockeado de nuestros handlers.
