@@ -1,0 +1,50 @@
+Testeando Graphql a través de un Service Worker
+-----------------------------------------------
+
+Si ya pasaste por el módulo de testeando REST API, ésto se te va a hacer aburridamente familiar. Sino, seguí leyendo:
+
+Lo que vamos a necesitar para testear a través de este método es una librería que nos dará un Mock Service Provider. Para ello, vamos a hacer lo siguiente:
+
+- instalar un paquete que se llama "msw", cuyas siglas corresponden a Mock Service Worker, y nos permitirá interceptar requests y devolver determinadas respuestas que nosotros le indiquemos.
+
+Una vez instalado, tenemos que crear unas funciones especiales que se llaman handlers, que nos permitirán determinar lo que se retorne de cualquier ruta/endpoint, y vamos a crearlos en una carpeta mocks, en el archivo handlers.js
+
+Para más info, acá dejo la documentación: https://mswjs.io/docs/getting-started/mocks/graphql-api#request-handler
+
+Ya con el server corriendo, podemos preparar nuestros handlers para interceptar requests!
+
+Handlers
+--------
+
+En sí, los handlers son básicamente un array donde cada índice será una función que representará a cada request que queramos testear. Lo interesante es que vamos a definir también qué estará devolviendo siempre. En este caso, le agregamos los dos primeros productos de nuestro mismo exacto json de carpinchos.
+
+Finalmente, nos queda levantar el Mock Service Worker
+
+MSW
+---
+
+Ya con los handlers definidos, lo que nos queda es simplemente integrarlo!
+
+Siguiendo los pasos de la documentación, vamos a crear un server para el Mock Service Worker: 
+https://mswjs.io/docs/getting-started/integrate/node
+
+Una vez configurado, lo último es configurar Create React App para que funcione con el Mock Service Worker, cosa que dicho servicio intercepte los requests y devuelva la respuesta que le indicamos en los handlers. Esto se hace modificando el archivo setupTests.js, y creando un server.js en la carpet amocks, que levantará los handlers y creará un server el cual recibirá los requests interceptados.
+
+Como podemos ver, los tests inicialmente fallarán porque nos dice que no puede encontrar un client en el context o pasado como prop/option.
+Esto se debe a que la prueba la estamos haciendo con <App /> rendereado de manera independiente, mientras que métodos como useQuery vienen atados del provider que tenemos en index.js
+Para solucionarlo, es tan simple como importarlo en el archivo de pruebas, y wrappear dentro del método render a <App /> con dicho provider.
+
+Ahora sí, al correr los tests vemos que el render lo está haciendo, sin embargo no está encontrando las img. Esto es porque al momento de correr las pruebas, como los requests son siempre asincrónicos y nuestras pruebas aún no, dichas imágenes aun no existen en el DOM.
+Hora de hacer que nuestros tests sean asincrónicos.
+
+Async Testing
+-------------
+
+Hacer asincrónicas las pruebas es algo bastante simple, y lleva de cierto modo una regla de oro:
+
+Cada vez que necesitemos esperar que un elemento se renderee asincrónicamente, debemos usar await findBy.
+
+Los queries de tipo find son especiales porque devuelven una promesa. Internamente lo que hacen es intentar encontrar elemento cada una cantidad de tiempo predefinida, hasta un cierto timeout.
+Dado que devuelve una promesa, debemos usar await/async
+
+OJO: Es posible que los tests no pasen si existe alguna minima diferencia entre la data que devuelve el backend real con respecto al backend mockeado de nuestros handlers.
