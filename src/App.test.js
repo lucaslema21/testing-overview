@@ -1,20 +1,32 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 
-test('button has correct initial color and text', () => {
+test('that the header contains a heading with the name Carpincho Store in it', () => {
   render(<App />)
-  const buttonElement = screen.getByRole('button', {name: 'Change to blue'})
-  expect(buttonElement).toHaveStyle(`
-    background-color: red;
-  `)
+  const element = screen.getByRole('heading', {name: 'Carpincho Store'});
+  expect(element).toBeInTheDocument()
 })
 
-test('button turns blue when clicked and changes text accordingly', () => {
+test('that the header starts with the button on Login', () => {
   render(<App />)
-  const buttonElement = screen.getByRole('button', {name: 'Change to blue'})
-  fireEvent.click(buttonElement);
-  expect(buttonElement).toHaveStyle(`
-    background-color: blue;
-  `)
-  expect(buttonElement).toHaveTextContent('Change to red')
+  const element = screen.getByRole('button', {name: 'Login'});
+  expect(element).toBeInTheDocument()
+})
+
+test('that the Login button toggles back and forth between Logout and Login when clicking it', () => {
+  render(<App />)
+  const element = screen.getByRole('button', {name: 'Login'});
+  fireEvent.click(element);
+  expect(element).toHaveTextContent('Logout')
+  fireEvent.click(element);
+  expect(element).toHaveTextContent('Login')
+})
+
+test('that a delete button shows up inside each card whenever the user logs in', () => {
+  render(<App />)
+  const element = screen.getByRole('button', {name: 'Login'});
+  fireEvent.click(element);
+  const imgElements = screen.getAllByRole('img');
+  const cardElement = screen.getAllByRole('button', {name: 'X'})
+  expect(cardElement).toHaveLength(imgElements.length)
 })

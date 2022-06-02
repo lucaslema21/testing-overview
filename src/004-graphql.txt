@@ -1,0 +1,22 @@
+Ya sabemos que podemos testear cómo inicialmente se deben presentar ciertos elementos, cómo deben reaccionar a la hora de ser clickeados, y también cómo buscar elementos que se renderean condicionalmente.
+
+Nos falta un último escenario típico donde desde nuestra aplicación hacemos un http request a un servicio/endpoint, mostrándole al user no sólo que algo está ocurriendo, sino también que una vez cumplida una promesa, qué ocurrió con lo que sea que estábamos procesando.
+
+Para ésto, vamos a usar de ejemplo nuestra Carpincho Store, y estaremos diferentes herramientas que nos van a permitir hacer un mock de un hipotético request a un endpoint, devolviéndonos una respuesta con nuestros productos..
+
+Vamos a analizar cómo testear requests tanto a una clásica REST API, como a través de graphql.
+
+Preparando el terreno
+---------------------
+
+Si estás parado en este branch, es porque vamos a ver el ejemplo con GRAPHQL, y para ello vamos a necesitar:
+
+- un server, que está en una carpeta en este mismo directorio y devuelve los carpinchitos de la home. Para correrlo, sólo es necesario correr npm install dentro de la carpeta server, y luego node server.js
+- instalar en la app el cliente de apollo para poder hacer queries de graphql
+
+Una vez hecho todo ésto, tenemos 2 maneras principales de testear:
+
+- Uno es con el uso de un Service Worker como el Mock Service Worker, interceptando requests.
+- Utilizando MockProvider, provisto por el cliente de Apollo, y como se testea actualmente en Cascade, al día de redacción de este documento.
+
+Vamos a ver las 2 formas! :D
